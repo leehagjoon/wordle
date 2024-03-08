@@ -1,5 +1,3 @@
-const 정답 = "APPLE";
-
 let attempts = 0;
 let index = 0;
 let timer;
@@ -25,8 +23,12 @@ function appStart() {
     index = 0;
   };
 
-  const handleEnterKey = () => {
+  const handleEnterKey = async () => {
     let 맞은_갯수 = 0;
+
+    //서버에서 정답을 받아오는 코드
+    const 응답 = await fetch("/answer");
+    const 정답 = await 응답.json();
 
     for (let i = 0; i < 5; i++) {
       const block = document.querySelector(
@@ -90,20 +92,6 @@ function appStart() {
 
   startTimer();
   window.addEventListener("keydown", handleKeydown);
-
-  // 키보드 요소에 정답 표시 및 클릭 이벤트 추가
-  const keyboardColumns = document.querySelectorAll(".keyboard-column");
-  keyboardColumns.forEach((column) => {
-    const key = column.dataset.key.toUpperCase();
-    if (정답.includes(key)) {
-      column.classList.add("correct-key");
-    }
-    column.addEventListener("click", () => {
-      const keyCode = key.charCodeAt(0);
-      const fakeEvent = new KeyboardEvent("keydown", { keyCode });
-      window.dispatchEvent(fakeEvent);
-    });
-  });
 }
 
 appStart();
