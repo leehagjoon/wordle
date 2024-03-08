@@ -90,6 +90,20 @@ function appStart() {
 
   startTimer();
   window.addEventListener("keydown", handleKeydown);
+
+  // 키보드 요소에 정답 표시 및 클릭 이벤트 추가
+  const keyboardColumns = document.querySelectorAll(".keyboard-column");
+  keyboardColumns.forEach((column) => {
+    const key = column.dataset.key.toUpperCase();
+    if (정답.includes(key)) {
+      column.classList.add("correct-key");
+    }
+    column.addEventListener("click", () => {
+      const keyCode = key.charCodeAt(0);
+      const fakeEvent = new KeyboardEvent("keydown", { keyCode });
+      window.dispatchEvent(fakeEvent);
+    });
+  });
 }
 
 appStart();
